@@ -1,0 +1,65 @@
+# Centralized dataset build + load parameters.
+#
+# Read by `WAConfig.from_yaml()` and `KSAAlignedConfig.from_yaml()`.
+# Build scripts (scripts/build_wa_dataset/, scripts/build_ksa_dataset/)
+# and the dataloaders notebook both go through these configs, so preprocessing
+# and loading stay in sync.
+#
+# To change a parameter for the whole repo, edit this file. Per-run overrides
+# on the build scripts go through the argparse flags (which fall through to
+# these values when unset).
+
+wa:
+  # Data layer key used in sample dicts.
+  product: MAG
+  # HR -> LR downsampling factor (stride_px must be a multiple).
+  scale_factor: 4
+  # Patching (HR pixels).
+  patch_px: 128
+  stride_px: 128
+  min_valid_frac: 0.95
+  # Robust percentile clip used for normalization.
+  q_low: 1
+  q_high: 99
+  # Train/val split, test region is already reserved
+  val_fraction: 0.1
+  seed: 42
+
+ksa_aligned:
+  # SGS survey blocks to include. `null` = auto-discover all nonzero IDs in the 60 m mask raster.
+  blocks: [1, 2, 3]
+  # HR patch size in 60 m pixels. Must be a multiple of `lr_scale`=3 (so HR origins map to integer LR/DEM offsets).
+  patch_px: 132
+  # Stride between HR patch origins in 60 m pixels. Must be a multiple of 3. Set < patch_px for overlap.
+  stride_px: 66
+  # Minimum fraction of valid (non-NaN) HR pixels per patch to keep it.
+  min_valid_frac: 0.97
+  # HR magnetic products loaded per sample. Loader auto-prefers the per-block zero-mean `_blockwise_unbiased.tif` if present.
+  hr_products: [AMF_RTP]
+  # LR magnetic products loaded per sample.
+  lr_products: [RTP]
+  # LR product whose validity is AND-ed with the block mask at patch-build time. `null` = block mask only.
+  lr_validity_product: RTP
+  # Include the 30 m DEM raster in samples under the `dem` key.
+  load_dem: false
+  # Normalization mode used by `KSAShieldAlignedDataset.normalize()/denormalize()`:
+  #   `global`    = single (vmin, vmax) pooled across all blocks.
+  #   `blockwise` = per-block (vmin, vmax); caller must pass a `blocks` list of length B per batch.
+  norm_mode: global
+  # Cell-grid split scheme (build stages 05/06): square cells of
+  # cell_patches x cell_patches patches separated by a buffer_patches-wide
+  # dropped strip; whole cells are randomly assigned to splits (patch-count
+  # weighted). CLI flags override for ad-hoc variants (e.g.
+  # `05_ksa_aligned_build_cell_indices.py --cell-patches 8 --suffix 8`).
+  cellgrid:
+    # Cell side length, in patches (8×8 is the settled benchmark default).
+    cell_patches: 8
+    # Dropped strip between adjacent cells, in patches — keeps splits from sharing pixels.
+    buffer_patches: 1
+    # Drop cells with less mask coverage than this (0.0 keeps every populated lattice cell).
+    min_cell_valid_frac: 0.0
+    # Fraction of patches held out per split (train gets the remainder).
+    val_frac: 0.10
+    test_frac: 0.10
+    # RNG seed for the per-block cell-to-split permutation.
+    seed: 42

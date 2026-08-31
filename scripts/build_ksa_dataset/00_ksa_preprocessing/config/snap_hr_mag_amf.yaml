@@ -1,0 +1,32 @@
+# HR example: the AMF product across all RGP survey blocks, onto the 60 m grid.
+#
+# Unlike the LR sheets, the HR blocks span three UTM zones (EPSG:9356/9357/9358,
+# MTRF-2000 36N/37N/38N), so each tile is warped independently into the shared
+# destination and each file's own nodata (-999999) is honoured.
+#
+# Copy per product: MAG_AMF_RTP, MAG_AMF_RTP1VD, MAG_AMF_RTP2VD, MAG_AMF_ANS,
+# MAG_AMF_RTPHG, MAG_AMF_RTPTILT, MAG_HGLAT, MAG_HGLONG, DTM.
+#
+# Relative paths resolve against the repo root.
+paths:
+  master_grid: data/ksa_base_grids/magnetic_base_grid60m.tif
+  output_dir: data/processed/ksa_aligned/02_snap_owned/aeromagnetics/60m/cubicspline
+
+processing:
+  resample_alg: cubicspline
+  apply_mask: true
+  overlap_strategy: first
+  output_name: snapped_cubicspline_MAG_AMF.tif
+
+inputs:
+  glob:
+    dir: data/raw/ksa_shield
+    # Block folders name the product tail consistently
+    # (<sheet>_RGP_GEOPH<n>_UTM<zone>N_MAG_AMF.tif); the trailing `_MAG_AMF.tif`
+    # keeps derived products such as `_MAG_AMF_RTP.tif` out.
+    pattern: "**/*_MAG_AMF.tif"
+
+output_format:
+  compress: LZW
+  bigtiff: IF_SAFER
+  block_size: 512

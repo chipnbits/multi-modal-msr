@@ -1,0 +1,11 @@
+# KSA x3 U-Net cross-architecture pair (fold 3, dense stride-12) -> tab:exp_unet.
+# 1.05M model (base32, nrb2, mult 1:1:2) with the survey-block class embedding as the
+# U-Net's counterpart to the RDN per-block adapters. Recovered from the original launch
+# scripts. Dense s12 overfits fast, hence val-every 0.10 (~10x/epoch).
+launcher: python
+train_script: experiments/ksa_aligned_unet_train.py
+common: "--index-dir data/processed/ksa_aligned/patch_indices_cellgrid8s12_fold3 --base-channels 32 --num-res-blocks 2 --channel-mult 1 1 2 --class-cond --sched cosine --lr-end 1e-5 --pct-start 0.05 --num-epochs 20 --val-every 0.10 --num-workers 16"
+runs:
+  - {name: unet_x3_ksa_f3_s12_classcond_112, args: "--batch-size 128 --lr-start 1e-3"}
+  - {name: unet_x3_ksa_f3_s12_classcond_combo_112,
+     args: "--batch-size 64 --lr-start 3e-4 --use-dem --dem-mode grad --lr-aux 1VD --fvd-weight 5"}

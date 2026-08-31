@@ -1,0 +1,20 @@
+# Master reference grid that every product is snapped to. Two grids are needed, one
+# per target pixel size — 60 m for the HR products, 180 m for the LR products. Run
+# 02_base_grid.py twice, changing `output` and `pixel_size_m` between runs.
+#
+# The pre-built grids ship in `data/ksa_base_grids/` (magnetic_base_grid{30,60,180}m,
+# the block mask, the inference grid), so you do NOT need to run this to reproduce the
+# KSA dataset — 03_snap_raster.py snaps onto those committed files directly. Use this
+# only to regenerate the grids or to define a master grid for a new AOI; `output`
+# below writes over the committed grid so the snap configs pick it up unchanged.
+#
+# Relative paths resolve against the repo root.
+paths:
+  aoi: data/raw/aoi/ksa_shield_aoi.shp
+  output: data/ksa_base_grids/magnetic_base_grid60m.tif
+
+grid:
+  pixel_size_m: 60 # 180 for the LR grid
+  tile_divisor: 256 # grid dims are floored to a whole number of these blocks
+  buffer_m: 0 # positive = erode inward, negative = expand outward
+  override_epsg: 32637

@@ -1,0 +1,18 @@
+# Input/output modality ablation (nb13, k0, fold-3 stride-12) -> tab:exp_modality.
+# Inputs: 1VD (vertical derivative), ANS (analytic signal), DEM (grad=2ch slope / relief=1ch
+# elevation). Output: FVD physics feature-loss weight. Mag-only control = no extra args.
+common: "--nb 13 --index-dir data/processed/ksa_aligned/patch_indices_cellgrid8s12_fold3 --domain-rrdbs 0 --num-epochs 20 --val-every 1 --domain-warmup-epochs 2"
+runs:
+  - {name: rdnpp_x3_ksa_f3_nb13_k0_dwd2e-3_s12_1vd_demgrad_fvd5,   args: "--lr-aux 1VD --use-dem --dem-mode grad --fvd-weight 5"}
+  # this run was trained in a different batch: adapters frozen the whole run (warmup=epochs), val 0.1
+  - {name: rdnpp_x3_ksa_f3_nb13_k0_dwd2e-3_s12_1vd_demrelief_fvd5, args: "--lr-aux 1VD --use-dem --dem-mode relief --fvd-weight 5 --val-every 0.1 --domain-warmup-epochs 20"}
+  - {name: rdnpp_x3_ksa_f3_nb13_k0_dwd2e-3_s12_1vd_ans_demrelief,  args: "--lr-aux 1VD ANS --use-dem --dem-mode relief"}
+  - {name: rdnpp_x3_ksa_f3_nb13_k0_dwd2e-3_s12_1vd_demgrad,        args: "--lr-aux 1VD --use-dem --dem-mode grad"}
+  - {name: rdnpp_x3_ksa_f3_nb13_k0_dwd2e-3_s12_1vd_ans,            args: "--lr-aux 1VD ANS"}
+  - {name: rdnpp_x3_ksa_f3_nb13_k0_dwd2e-3_s12_1vd,               args: "--lr-aux 1VD"}
+  - {name: rdnpp_x3_ksa_f3_nb13_k0_dwd2e-3_s12_ans,               args: "--lr-aux ANS"}
+  - {name: rdnpp_x3_ksa_f3_nb13_k0_dwd2e-3_s12_demgrad,           args: "--use-dem --dem-mode grad"}
+  - {name: rdnpp_x3_ksa_f3_nb13_k0_dwd2e-3_s12_demrelief,         args: "--use-dem --dem-mode relief"}
+  - {name: rdnpp_x3_ksa_f3_nb13_k0_dwd2e-3_s12_fvd50,             args: "--fvd-weight 50"}
+  - {name: rdnpp_x3_ksa_f3_nb13_k0_dwd2e-3_s12_fvd5,              args: "--fvd-weight 5"}
+  - {name: rdnpp_x3_ksa_f3_nb13_k0_dwd2e-3_s12}   # mag-only (control)

@@ -1,0 +1,14 @@
+# Block-depth sweep (fold 3, stride-12) -> tab:exp_depth.
+# train.py deploys:  accelerate launch <trainer> --run-name <name> <common> <args>
+# `common` = flags shared by every run; `args` = that run's extra flags. Verbatim, no mapping.
+common: "--index-dir data/processed/ksa_aligned/patch_indices_cellgrid8s12_fold3 --domain-rrdbs 0 --num-epochs 20 --val-every 1 --domain-warmup-epochs 2"
+runs:
+  # multi-modal: 1VD input + DEM-gradient + FVD loss
+  - {name: rdnpp_x3_ksa_f3_nb13_k0_dwd2e-3_s12_1vd_demgrad_fvd5, args: "--nb 13 --lr-aux 1VD --use-dem --dem-mode grad --fvd-weight 5"}
+  - {name: rdnpp_x3_ksa_f3_nb18_k0_dwd2e-3_s12_1vd_demgrad_fvd5, args: "--nb 18 --lr-aux 1VD --use-dem --dem-mode grad --fvd-weight 5"}
+  - {name: rdnpp_x3_ksa_f3_nb23_k0_dwd2e-3_s12_1vd_demgrad_fvd5, args: "--nb 23 --lr-aux 1VD --use-dem --dem-mode grad --fvd-weight 5"}
+  # magnetic-only
+  - {name: rdnpp_x3_ksa_f3_nb8_k0_dwd2e-3_s12,  args: "--nb 8"}
+  - {name: rdnpp_x3_ksa_f3_nb13_k0_dwd2e-3_s12, args: "--nb 13"}   # control
+  - {name: rdnpp_x3_ksa_f3_nb18_k0_dwd2e-3_s12, args: "--nb 18"}
+  - {name: rdnpp_x3_ksa_f3_nb23_k0_dwd2e-3_s12, args: "--nb 23"}

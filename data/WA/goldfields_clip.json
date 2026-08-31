@@ -1,0 +1,10 @@
+{
+  "_comment": "Goldfields clip region (EPSG:7844 left,bottom,right,top). 01_clip reclips the state-wide grids to this bbox; it equals the original hand-drawn HR clip, so the HR pixel phase \u2014 and thus the tile set \u2014 is preserved. Edit for a new region (then tiles differ).",
+  "crs": "EPSG:7844",
+  "bounds": [
+    119.50718663238418,
+    -32.31714372397361,
+    123.48113860738418,
+    -28.64152460497361
+  ]
+}

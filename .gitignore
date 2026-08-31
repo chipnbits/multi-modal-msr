@@ -1,0 +1,85 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+*.egg-info/
+dist/
+build/
+
+.claude/
+*/wandb/
+CLAUDE.md
+
+# Virtual environments
+.venv/
+venv/
+ENV/
+env/
+
+/wandb/
+
+scripts/hpc/*
+
+# Jupyter
+.ipynb_checkpoints/
+*.ipynb_checkpoints
+
+# Results and outputs
+results/
+*.log
+*.out
+*.err
+
+# Data (keep structure, ignore contents)
+data/raw/*
+data/processed/*
+data/external/*
+
+
+# WA dataset (large files downloaded via gdown)
+data/WA/*.tif
+data/WA/*.tif.aux.xml
+data/WA/*.zip
+data/WA/*.ers
+data/WA/*.ers.aux.xml
+data/WA/WA_Mag_Merge_*/
+data/WA/.*.extracted
+data/WA/dem_src/
+data/WA/raw
+
+# Experiment outputs
+experiments/*/results/
+experiments/*/outputs/
+figures/*
+!figures/wa_study_area_overview.png
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Environment variables
+.env
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Model checkpoints
+*.pt
+*.pth
+*.ckpt
+*.h5
+
+# Temporary files
+*.tmp
+*.bak
+
+# Local worktree tooling
+.worktreeinclude
+# Generated LaTeX tables
+experiments/ksa_ablations/*.tex

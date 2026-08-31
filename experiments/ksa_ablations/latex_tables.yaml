@@ -1,0 +1,92 @@
+# Canonical run list behind the KSA ablation tables (manuscript).
+# One entry per table row: (label, run stem). The checkpoint is selected by argmin
+# validation RMSE at scoring time (see evaluate.py / make_tables.py)
+#
+# Reference rows shared across tables:
+#   control  = matched nb13 k0 s12 architecture, magnetic-only  (73.2 nT)
+#   baseline = reproduced published RDN++ (nb23, current arch)      (73.5 nT)
+#   bicubic  = deterministic interpolation                          (81.7 nT)
+
+index_dir: data/processed/ksa_aligned/patch_indices_cellgrid8_fold3   # fold-3 stride-66 test
+S12: &s12 rdnpp_x3_ksa_f3_nb13_k0_dwd2e-3_s12
+references:
+  control:  rdnpp_x3_ksa_f3_nb13_k0_dwd2e-3_s12
+  baseline: rdnpp_x3_nb23_noadapt_cellgrid8_f3
+  bicubic:  bicubic_ksa_f3
+
+tables:
+  depth:
+    caption: "Block-depth sweep on Fold 3, current architecture throughout."
+    rows:
+      - {label: "nb13_multi-modal", run: rdnpp_x3_ksa_f3_nb13_k0_dwd2e-3_s12_1vd_demgrad_fvd5, ch: 4}
+      - {label: "nb18_multi-modal", run: rdnpp_x3_ksa_f3_nb18_k0_dwd2e-3_s12_1vd_demgrad_fvd5, ch: 4}
+      - {label: "nb23_multi-modal", run: rdnpp_x3_ksa_f3_nb23_k0_dwd2e-3_s12_1vd_demgrad_fvd5, ch: 4}
+      - {label: "nb08",            run: rdnpp_x3_ksa_f3_nb8_k0_dwd2e-3_s12,  ch: 1}
+      - {label: "nb13 (control)",  run: rdnpp_x3_ksa_f3_nb13_k0_dwd2e-3_s12, ch: 1}
+      - {label: "nb18",            run: rdnpp_x3_ksa_f3_nb18_k0_dwd2e-3_s12, ch: 1}
+      - {label: "nb23",            run: rdnpp_x3_ksa_f3_nb23_k0_dwd2e-3_s12, ch: 1}
+    midrule_after: [3]        # separate multi-modal family from mag-only
+    include_refs: [bicubic]
+
+  adapter:
+    caption: "Per-block domain-adapter placement (k RRDBs) and domain weight decay; nb08."
+    rows:
+      - {label: "k0_dwd1e-3", run: rdnpp_x3_ksa_f3_nb8_k0_dwd1e-3, ch: 1}
+      - {label: "k0_dwd2e-3", run: rdnpp_x3_ksa_f3_nb8_k0_dwd2e-3, ch: 1}
+      - {label: "k0_dwd4e-3", run: rdnpp_x3_ksa_f3_nb8_k0_dwd4e-3, ch: 1}
+      - {label: "k0_dwd8e-3", run: rdnpp_x3_ksa_f3_nb8_k0_dwd8e-3, ch: 1}
+      - {label: "k1_dwd1e-3", run: rdnpp_x3_ksa_f3_nb8_k1_dwd1e-3, ch: 1}
+      - {label: "k1_dwd2e-3", run: rdnpp_x3_ksa_f3_nb8_k1_dwd2e-3, ch: 1}
+      - {label: "k1_dwd4e-3", run: rdnpp_x3_ksa_f3_nb8_k1_dwd4e-3, ch: 1}
+      - {label: "k1_dwd8e-3", run: rdnpp_x3_ksa_f3_nb8_k1_dwd8e-3, ch: 1}
+      - {label: "k2_dwd1e-3", run: rdnpp_x3_ksa_f3_nb8_k2_dwd1e-3, ch: 1}
+      - {label: "k2_dwd2e-3", run: rdnpp_x3_ksa_f3_nb8_k2_dwd2e-3, ch: 1}
+      - {label: "k2_dwd4e-3", run: rdnpp_x3_ksa_f3_nb8_k2_dwd4e-3, ch: 1}
+      - {label: "k2_dwd8e-3", run: rdnpp_x3_ksa_f3_nb8_k2_dwd8e-3, ch: 1}
+    include_refs: [baseline, bicubic]
+
+  modality:
+    caption: "Input and output feature ablation (nb13 k0 s12). Inputs (1VD, DEM-gradient) and the FVD physics-derived feature loss."
+    rows:
+      - {label: "1vd_demgrad_fvd5",   run: rdnpp_x3_ksa_f3_nb13_k0_dwd2e-3_s12_1vd_demgrad_fvd5, ch: 4}
+      - {label: "1vd_demrelief_fvd5", run: rdnpp_x3_ksa_f3_nb13_k0_dwd2e-3_s12_1vd_demrelief_fvd5, ch: 3}
+      - {label: "1vd_ans_demrelief",  run: rdnpp_x3_ksa_f3_nb13_k0_dwd2e-3_s12_1vd_ans_demrelief, ch: 4}
+      - {label: "1vd_demgrad",  run: rdnpp_x3_ksa_f3_nb13_k0_dwd2e-3_s12_1vd_demgrad, ch: 4}
+      - {label: "1vd_ans",      run: rdnpp_x3_ksa_f3_nb13_k0_dwd2e-3_s12_1vd_ans, ch: 3}
+      - {label: "1vd",          run: rdnpp_x3_ksa_f3_nb13_k0_dwd2e-3_s12_1vd, ch: 2}
+      - {label: "ans",          run: rdnpp_x3_ksa_f3_nb13_k0_dwd2e-3_s12_ans, ch: 2}
+      - {label: "demgrad",      run: rdnpp_x3_ksa_f3_nb13_k0_dwd2e-3_s12_demgrad, ch: 3}
+      - {label: "demrelief",          run: rdnpp_x3_ksa_f3_nb13_k0_dwd2e-3_s12_demrelief, ch: 2}
+      - {label: "fvd50",        run: rdnpp_x3_ksa_f3_nb13_k0_dwd2e-3_s12_fvd50, ch: 1}
+      - {label: "fvd5",         run: rdnpp_x3_ksa_f3_nb13_k0_dwd2e-3_s12_fvd5, ch: 1}
+      - {label: "mag-only (control)", run: rdnpp_x3_ksa_f3_nb13_k0_dwd2e-3_s12, ch: 1}
+    include_refs: [baseline, bicubic]
+
+  unet:
+    caption: "U-Net vs. RDN, combo vs. baseline on Fold 3."
+    rows:
+      - {label: "U-Net combo",    run: unet_x3_ksa_f3_s12_classcond_combo_112, ch: 4}
+      - {label: "U-Net baseline", run: unet_x3_ksa_f3_s12_classcond_112, ch: 1}
+      - {label: "RDN combo",      run: rdnpp_x3_nb13_k0_dwd2e-3_s12_1vd_demgrad_fvd5_cellgrid8_f3, ch: 4}
+      - {label: "RDN baseline",   run: rdnpp_x3_nb23_noadapt_cellgrid8_f3, ch: 1}
+    include_refs: [bicubic]
+
+  wa:
+    caption: "Western Australia Goldfields ($\\times$4): combo inputs beat the mag-only baseline for both backbones; RDN combo is best overall."
+    rmse_dp: 2                      # WA errors are ~4 nT — needs 2 decimals
+    rows:
+      - {label: "U-Net combo",    run: unet_x4_wa_5M_combo_onecycle_pct30, ch: 4}
+      - {label: "U-Net baseline", run: unet_x4_wa_5M_baseline_onecycle_pct30, ch: 1}
+      - {label: "RDN combo",      run: rdnpp_x4_wa_1vd_demgrad_fvd5, ch: 4}
+      - {label: "RDN baseline",   run: rdnpp_x4_wa_baseline, ch: 1}
+    include_refs: [bicubic_wa]
+
+# 5-fold cross-validation summary: mean over folds 0-4 with the fold min-max range.
+# Rendered by render_fold_table (each cell = \mr{mean}{lo--hi}).
+fivefold:
+  caption: "KSA 5-fold cross-validation. Each cell: 5-fold mean with fold min--max beneath."
+  models:
+    - {label: "Baseline (nb23)",       stem: rdnpp_x3_nb23_noadapt_cellgrid8, ch: 1}
+    - {label: "Control (mag-only)",    stem: rdnpp_x3_nb13_k0_dwd2e-3_s12_magonly_cellgrid8, ch: 1}
+    - {label: "Combo (nb13 s12)",      stem: rdnpp_x3_nb13_k0_dwd2e-3_s12_1vd_demgrad_fvd5_cellgrid8, ch: 4}
+  bicubic_stem: bicubic_ksa

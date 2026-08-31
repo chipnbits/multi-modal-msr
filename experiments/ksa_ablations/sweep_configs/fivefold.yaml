@@ -1,0 +1,26 @@
+# KSA 5-fold cross-validation -> tab:exp_v2_ksa. Three model families x folds 0-4.
+# Families differ in training budget (index, epochs, adapters), so no `common` — each run's
+# full flags are in its `args`:
+#   baseline  nb23 noadapt (num_domains 1), stride-66, 250ep schedule stopped at 200
+#   control   nb13 k0 mag-only, stride-12, 20ep
+#   combo     nb13 k0 + 1VD + DEM-grad + FVD, stride-12, 20ep
+common: ""
+runs:
+  # --- baseline: nb23, no adapters ---
+  - {name: rdnpp_x3_nb23_noadapt_cellgrid8_f0, args: "--nb 23 --index-dir data/processed/ksa_aligned/patch_indices_cellgrid8_fold0 --num-domains 1 --val-every 1.0 --stop-epoch 200"}
+  - {name: rdnpp_x3_nb23_noadapt_cellgrid8_f1, args: "--nb 23 --index-dir data/processed/ksa_aligned/patch_indices_cellgrid8_fold1 --num-domains 1 --val-every 1.0 --stop-epoch 200"}
+  - {name: rdnpp_x3_nb23_noadapt_cellgrid8_f2, args: "--nb 23 --index-dir data/processed/ksa_aligned/patch_indices_cellgrid8_fold2 --num-domains 1 --val-every 1.0 --stop-epoch 200"}
+  - {name: rdnpp_x3_nb23_noadapt_cellgrid8_f3, args: "--nb 23 --index-dir data/processed/ksa_aligned/patch_indices_cellgrid8_fold3 --num-domains 1 --val-every 1.0 --stop-epoch 200"}
+  - {name: rdnpp_x3_nb23_noadapt_cellgrid8_f4, args: "--nb 23 --index-dir data/processed/ksa_aligned/patch_indices_cellgrid8_fold4 --num-domains 1 --val-every 1.0 --stop-epoch 200"}
+  # --- control: nb13 k0 mag-only, stride-12 ---
+  - {name: rdnpp_x3_nb13_k0_dwd2e-3_s12_magonly_cellgrid8_f0, args: "--nb 13 --index-dir data/processed/ksa_aligned/patch_indices_cellgrid8s12_fold0 --domain-rrdbs 0 --num-epochs 20 --val-every 0.25 --domain-warmup-epochs 2"}
+  - {name: rdnpp_x3_nb13_k0_dwd2e-3_s12_magonly_cellgrid8_f1, args: "--nb 13 --index-dir data/processed/ksa_aligned/patch_indices_cellgrid8s12_fold1 --domain-rrdbs 0 --num-epochs 20 --val-every 0.25 --domain-warmup-epochs 2"}
+  - {name: rdnpp_x3_nb13_k0_dwd2e-3_s12_magonly_cellgrid8_f2, args: "--nb 13 --index-dir data/processed/ksa_aligned/patch_indices_cellgrid8s12_fold2 --domain-rrdbs 0 --num-epochs 20 --val-every 0.25 --domain-warmup-epochs 2"}
+  - {name: rdnpp_x3_nb13_k0_dwd2e-3_s12_magonly_cellgrid8_f3, args: "--nb 13 --index-dir data/processed/ksa_aligned/patch_indices_cellgrid8s12_fold3 --domain-rrdbs 0 --num-epochs 20 --val-every 0.25 --domain-warmup-epochs 2"}
+  - {name: rdnpp_x3_nb13_k0_dwd2e-3_s12_magonly_cellgrid8_f4, args: "--nb 13 --index-dir data/processed/ksa_aligned/patch_indices_cellgrid8s12_fold4 --domain-rrdbs 0 --num-epochs 20 --val-every 0.25 --domain-warmup-epochs 2"}
+  # --- combo: nb13 k0 + 1VD + DEM-grad + FVD, stride-12 ---
+  - {name: rdnpp_x3_nb13_k0_dwd2e-3_s12_1vd_demgrad_fvd5_cellgrid8_f0, args: "--nb 13 --index-dir data/processed/ksa_aligned/patch_indices_cellgrid8s12_fold0 --domain-rrdbs 0 --num-epochs 20 --val-every 0.25 --domain-warmup-epochs 2 --lr-aux 1VD --use-dem --dem-mode grad --fvd-weight 5"}
+  - {name: rdnpp_x3_nb13_k0_dwd2e-3_s12_1vd_demgrad_fvd5_cellgrid8_f1, args: "--nb 13 --index-dir data/processed/ksa_aligned/patch_indices_cellgrid8s12_fold1 --domain-rrdbs 0 --num-epochs 20 --val-every 0.25 --domain-warmup-epochs 2 --lr-aux 1VD --use-dem --dem-mode grad --fvd-weight 5"}
+  - {name: rdnpp_x3_nb13_k0_dwd2e-3_s12_1vd_demgrad_fvd5_cellgrid8_f2, args: "--nb 13 --index-dir data/processed/ksa_aligned/patch_indices_cellgrid8s12_fold2 --domain-rrdbs 0 --num-epochs 20 --val-every 0.25 --domain-warmup-epochs 2 --lr-aux 1VD --use-dem --dem-mode grad --fvd-weight 5"}
+  - {name: rdnpp_x3_nb13_k0_dwd2e-3_s12_1vd_demgrad_fvd5_cellgrid8_f3, args: "--nb 13 --index-dir data/processed/ksa_aligned/patch_indices_cellgrid8s12_fold3 --domain-rrdbs 0 --num-epochs 20 --val-every 0.25 --domain-warmup-epochs 2 --lr-aux 1VD --use-dem --dem-mode grad --fvd-weight 5"}
+  - {name: rdnpp_x3_nb13_k0_dwd2e-3_s12_1vd_demgrad_fvd5_cellgrid8_f4, args: "--nb 13 --index-dir data/processed/ksa_aligned/patch_indices_cellgrid8s12_fold4 --domain-rrdbs 0 --num-epochs 20 --val-every 0.25 --domain-warmup-epochs 2 --lr-aux 1VD --use-dem --dem-mode grad --fvd-weight 5"}

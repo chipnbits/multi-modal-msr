@@ -1,0 +1,17 @@
+# WA Goldfields (x4) baseline-vs-combo, both backbones -> tab:exp_wa.
+# RDN pair recovered from the original queue script; the U-Net combo launch script was
+# never committed — its flags are the U-Net baseline's plus the standard combo channel
+# set (1VD + DEM-grad + FVD λ=5), matching the report's training-configuration table.
+launcher: python
+common: ""
+runs:
+  # --- RDN++ 16.8M, 602 ep (Smith et al. schedule) ---
+  - {name: rdnpp_x4_wa_baseline, train_script: experiments/wa_dataset/wa_rdn.py,
+     args: "--num-epochs 602"}
+  - {name: rdnpp_x4_wa_1vd_demgrad_fvd5, train_script: experiments/wa_dataset/wa_rdn.py,
+     args: "--num-epochs 602 --lr-aux 1VD --use-dem --fvd-weight 5"}
+  # --- U-Net 4.89M (base32, nrb3, mult 1:2:4), OneCycle peak-30%, 1200 ep ---
+  - {name: unet_x4_wa_5M_baseline_onecycle_pct30, train_script: experiments/wa_dataset/wa_unet_train.py,
+     args: "--base-channels 32 --num-res-blocks 3 --channel-mult 1 2 4 --batch-size 128 --sched onecycle --lr-start 3e-4 --pct-start 0.30 --num-epochs 1200 --val-every 1 --num-workers 8"}
+  - {name: unet_x4_wa_5M_combo_onecycle_pct30, train_script: experiments/wa_dataset/wa_unet_train.py,
+     args: "--base-channels 32 --num-res-blocks 3 --channel-mult 1 2 4 --lr-aux 1VD --use-dem --dem-mode grad --fvd-weight 5 --batch-size 128 --sched onecycle --lr-start 3e-4 --pct-start 0.30 --num-epochs 1200 --val-every 1 --num-workers 8"}

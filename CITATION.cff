@@ -1,0 +1,18 @@
+cff-version: 1.2.0
+title: "Multi-Modal MSR: Magnetic Survey Super-Resolution"
+message: "If you use this software, please cite it as below."
+type: software
+authors:
+  - family-names: "Ghyselincks"
+    given-names: "Simon"
+license: MIT
+repository-code: "https://github.com/chipnbits/multi-modal-msr"
+preferred-citation:
+  type: report
+  title: "Magnetic Super-Resolution: Enhancement of Aeromagnetic Survey Data Using Multi-Modal Machine Learning Methods"
+  authors:
+    - family-names: "Ghyselincks"
+      given-names: "Simon"
+  institution:
+    name: "University of British Columbia, Department of Computer Science"
+  year: 2026

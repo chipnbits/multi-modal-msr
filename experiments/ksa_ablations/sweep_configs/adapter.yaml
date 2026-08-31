@@ -1,0 +1,17 @@
+# Domain-adapter placement (k = trailing RRDBs carrying a per-block adapter) x adapter weight
+# decay, nb8, fold-3 stride-66 (cellgrid8), 160-epoch compressed budget -> tab:exp_adapter.
+# num_domains 3, domain_warmup_epochs 20, weight_decay 5e-4 are trainer defaults (not passed).
+common: "--nb 8 --index-dir data/processed/ksa_aligned/patch_indices_cellgrid8_fold3 --num-epochs 160"
+runs:
+  - {name: rdnpp_x3_ksa_f3_nb8_k0_dwd1e-3, args: "--domain-rrdbs 0 --domain-weight-decay 0.001"}
+  - {name: rdnpp_x3_ksa_f3_nb8_k0_dwd2e-3, args: "--domain-rrdbs 0 --domain-weight-decay 0.002"}
+  - {name: rdnpp_x3_ksa_f3_nb8_k0_dwd4e-3, args: "--domain-rrdbs 0 --domain-weight-decay 0.004"}
+  - {name: rdnpp_x3_ksa_f3_nb8_k0_dwd8e-3, args: "--domain-rrdbs 0 --domain-weight-decay 0.008"}
+  - {name: rdnpp_x3_ksa_f3_nb8_k1_dwd1e-3, args: "--domain-rrdbs 1 --domain-weight-decay 0.001"}
+  - {name: rdnpp_x3_ksa_f3_nb8_k1_dwd2e-3, args: "--domain-rrdbs 1 --domain-weight-decay 0.002"}
+  - {name: rdnpp_x3_ksa_f3_nb8_k1_dwd4e-3, args: "--domain-rrdbs 1 --domain-weight-decay 0.004"}
+  - {name: rdnpp_x3_ksa_f3_nb8_k1_dwd8e-3, args: "--domain-rrdbs 1 --domain-weight-decay 0.008"}
+  - {name: rdnpp_x3_ksa_f3_nb8_k2_dwd1e-3, args: "--domain-rrdbs 2 --domain-weight-decay 0.001"}
+  - {name: rdnpp_x3_ksa_f3_nb8_k2_dwd2e-3, args: "--domain-rrdbs 2 --domain-weight-decay 0.002"}
+  - {name: rdnpp_x3_ksa_f3_nb8_k2_dwd4e-3, args: "--domain-rrdbs 2 --domain-weight-decay 0.004"}
+  - {name: rdnpp_x3_ksa_f3_nb8_k2_dwd8e-3, args: "--domain-rrdbs 2 --domain-weight-decay 0.008"}
