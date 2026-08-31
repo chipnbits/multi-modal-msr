@@ -265,3 +265,10 @@ Distributed under the MIT License. See `LICENSE` for more information.
 Simon Ghyselincks - sghyseli@cs.ubc.ca
 
 Project Link: [https://github.com/chipnbits/multi-modal-msr](https://github.com/chipnbits/multi-modal-msr)
+
+<!-- CITATION -->
+## Citation
+
+[![DOI](https://zenodo.org/badge/1351936657.svg)](https://doi.org/10.5281/zenodo.22184837)
+
+If you use this software, please cite it via the DOI above; citation metadata is in [`CITATION.cff`](CITATION.cff).

@@ -7,6 +7,9 @@ authors:
     given-names: "Simon"
 license: MIT
 repository-code: "https://github.com/chipnbits/multi-modal-msr"
+doi: "10.5281/zenodo.22184837"
+version: "v1.0.0"
+date-released: "2026-08-31"
 preferred-citation:
   type: report
   title: "Magnetic Super-Resolution: Enhancement of Aeromagnetic Survey Data Using Multi-Modal Machine Learning Methods"
